@@ -1,0 +1,469 @@
+<title>Felixor</title>
+<style>
+/* ============================================================
+   FELIXOR - design tokens
+   Theme: single committed dark world (brand decision, locked)
+   Radius: one value, 8px, everywhere
+   Accent: one ember, used identically in every section
+   ============================================================ */
+:root{
+  --bg:#0A0B0E; --bg-2:#101218; --bg-3:#15171E;
+  --line:rgba(255,255,255,.085); --line-2:rgba(255,255,255,.16);
+  --fg:#EDEBE7; --fg-2:#A5A8AF; --fg-3:#82868E;
+  --accent:#E8804A; --accent-2:#F6A276; --accent-dim:rgba(232,128,74,.13);
+  --r:8px;
+  --container:1280px;
+  --gutter:clamp(1.25rem,5vw,4rem);
+  --section:clamp(5.5rem,11vw,9rem);
+  --ease:cubic-bezier(.16,1,.3,1);
+  --sans:"Geist","Geist Fallback",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  --mono:"Geist Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--bg); color:var(--fg);
+  font-family:var(--sans); font-size:17px; line-height:1.65;
+  font-weight:400; letter-spacing:-.011em;
+  -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+  overflow-x:hidden;
+}
+img{max-width:100%; display:block}
+a{color:inherit; text-decoration:none}
+h1,h2,h3,p,ul,ol,figure{margin:0}
+ul{list-style:none; padding:0}
+
+/* --- browser surfaces: these ship with defaults that belong to no design system --- */
+::selection{background:var(--accent); color:#0A0B0E}
+html{scrollbar-color:#2A2D35 var(--bg); scrollbar-width:thin}
+::-webkit-scrollbar{width:11px;height:11px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:#24272F; border:3px solid var(--bg); border-radius:99px}
+::-webkit-scrollbar-thumb:hover{background:#333741}
+:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:2px}
+input,textarea{caret-color:var(--accent)}
+
+.wrap{max-width:var(--container); margin:0 auto; padding-inline:var(--gutter)}
+
+/* ============================ type ============================ */
+.display{
+  font-size:clamp(2.5rem,5.5vw,4.5rem); font-weight:500;
+  letter-spacing:-.038em; line-height:1.0; text-wrap:balance;
+}
+.h2{
+  font-size:clamp(1.95rem,4vw,3.15rem); font-weight:500;
+  letter-spacing:-.034em; line-height:1.08; text-wrap:balance;
+}
+.h3{font-size:clamp(1.25rem,2vw,1.6rem); font-weight:500; letter-spacing:-.026em; line-height:1.2}
+.lead{font-size:clamp(1.05rem,1.5vw,1.3rem); line-height:1.55; color:var(--fg-2); max-width:34ch}
+.body{color:var(--fg-2); max-width:68ch}
+.body + .body{margin-top:1.15em}
+.dim{color:var(--fg-3)}
+
+/* ============================ nav ============================ */
+.nav{
+  position:fixed; inset:0 0 auto 0; z-index:60; height:72px;
+  display:flex; align-items:center;
+  transition:background .45s var(--ease), border-color .45s var(--ease), backdrop-filter .45s var(--ease);
+  border-bottom:1px solid transparent;
+}
+.nav.stuck{background:rgba(10,11,14,.78); backdrop-filter:blur(14px) saturate(140%); border-bottom-color:var(--line)}
+.nav .wrap{display:flex; align-items:center; justify-content:space-between; width:100%}
+.mark{font-size:1.075rem; font-weight:500; letter-spacing:-.03em}
+.mark i{color:var(--accent); font-style:normal}
+.navlinks{display:flex; align-items:center; gap:2rem}
+.navlinks a{font-size:.9rem; color:var(--fg-2); position:relative; transition:color .25s var(--ease)}
+.navlinks a::after{
+  content:""; position:absolute; left:0; right:0; bottom:-5px; height:1px;
+  background:var(--accent); transform:scaleX(0); transform-origin:left;
+  transition:transform .4s var(--ease);
+}
+.navlinks a:hover{color:var(--fg)}
+.navlinks a:hover::after{transform:scaleX(1)}
+.nav .navcta{padding:.58rem .95rem; font-size:.875rem}
+
+/* ============================ buttons ============================ */
+.btn{
+  display:inline-flex; align-items:center; gap:.55rem; white-space:nowrap;
+  font-size:.925rem; font-weight:500; letter-spacing:-.01em;
+  padding:.72rem 1.15rem; border-radius:var(--r); border:1px solid transparent;
+  transition:transform .25s var(--ease), background .25s var(--ease), border-color .25s var(--ease), color .25s var(--ease);
+}
+.btn svg{width:15px; height:15px; flex:none; transition:transform .35s var(--ease)}
+.btn-primary{background:var(--accent); color:#120701}
+.btn-primary:hover{background:var(--accent-2); transform:translateY(-1px)}
+.btn-primary:active{transform:translateY(0) scale(.985)}
+.btn-ghost{border-color:var(--line-2); color:var(--fg)}
+.btn-ghost:hover{border-color:var(--fg-3); background:rgba(255,255,255,.04); transform:translateY(-1px)}
+.btn-ghost:active{transform:translateY(0) scale(.985)}
+.btn:hover svg{transform:translate(2px,-2px)}
+.btn-lg{padding:.92rem 1.5rem; font-size:1rem}
+
+/* ============================ hero ============================ */
+.hero{position:relative; min-height:94dvh; display:flex; align-items:center; padding:104px 0 clamp(3rem,8vh,6rem); overflow:hidden}
+.hero-media{
+  position:absolute; top:0; right:0; width:43%; height:100%; z-index:0;
+  clip-path:inset(0 0 0 100%);
+}
+.hero-media img{width:100%; height:100%; object-fit:cover; transform:scale(1.07); transform-origin:70% 50%}
+.hero-media::after{
+  content:""; position:absolute; inset:0;
+  background:linear-gradient(90deg,var(--bg) 0%,rgba(10,11,14,.86) 26%,rgba(10,11,14,.14) 70%,rgba(10,11,14,.17) 100%);
+}
+.hero .wrap{position:relative; z-index:1; width:100%}
+.hero-copy{max-width:60ch}
+.hero h1{margin-bottom:1.6rem; max-width:20ch}
+.hero .lead{max-width:46ch}
+.rule{height:2px; background:var(--accent); width:0; margin:2.1rem 0; max-width:110px}
+.hero-actions{display:flex; flex-wrap:wrap; gap:.75rem}
+.w{display:inline-block; overflow:hidden; padding-bottom:.14em; margin-bottom:-.14em; vertical-align:bottom}
+.w > span{display:inline-block; transform:translateY(110%)}
+
+/* ============================ stack strip ============================ */
+.stack{border-block:1px solid var(--line); background:var(--bg-2)}
+.stack .wrap{padding-block:3rem; display:flex; align-items:center; gap:clamp(1.5rem,5vw,4.5rem); flex-wrap:wrap; justify-content:space-between}
+.stack p{font-size:.92rem; color:var(--fg-3); max-width:30ch; margin:0; text-wrap:balance}
+.logos{display:flex; align-items:center; gap:clamp(1.75rem,4vw,3.5rem); flex-wrap:wrap}
+.logos svg{width:30px; height:30px; fill:#8C9099; transition:fill .35s var(--ease), transform .35s var(--ease)}
+.logos a:hover svg,.logos span:hover svg{fill:var(--fg); transform:translateY(-2px)}
+
+/* ============================ generic section ============================ */
+.section{padding-block:var(--section)}
+.section-b{border-top:1px solid var(--line)}
+
+/* ---- editorial statement ---- */
+.editorial{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.05fr); gap:clamp(2rem,6vw,6rem); align-items:start}
+.editorial .h2{position:sticky; top:120px}
+
+/* ---- approach rows ---- */
+.rows{margin-top:clamp(3rem,6vw,5rem); display:grid; gap:0}
+.row{display:grid; grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr); gap:clamp(1.5rem,5vw,5rem);
+     padding-block:clamp(2.25rem,4vw,3.25rem); border-top:1px solid var(--line); position:relative}
+.row:last-of-type{border-bottom:1px solid var(--line)}
+.row::before{content:""; position:absolute; top:-1px; left:0; height:1px; width:64px; background:var(--accent); transform:scaleX(0); transform-origin:left; transition:transform 1.1s var(--ease)}
+.row.is-in::before{transform:scaleX(1)}
+.row:nth-child(2)::before{transition-delay:.1s}
+.row:nth-child(3)::before{transition-delay:.2s}
+.row .h3{padding-right:1rem}
+.band{margin-top:clamp(3rem,6vw,4.5rem); border-radius:var(--r); overflow:hidden; position:relative}
+.band img{width:100%; height:clamp(240px,38vw,420px); object-fit:cover; transform:scale(1.08); transition:transform 1.6s var(--ease)}
+.band.is-in img{transform:scale(1)}
+.band::after{content:""; position:absolute; inset:0; background:linear-gradient(180deg,rgba(10,11,14,.22),rgba(10,11,14,.68)); pointer-events:none}
+
+/* ---- founder ---- */
+.founder{display:grid; grid-template-columns:minmax(0,1.25fr) minmax(0,.8fr); gap:clamp(2rem,6vw,5.5rem); align-items:start}
+.facts{border-top:1px solid var(--line-2); padding-top:1.5rem}
+.facts li{padding-block:1.15rem; border-bottom:1px solid var(--line); font-size:.95rem; color:var(--fg-2)}
+.facts li strong{display:block; color:var(--fg); font-weight:500; letter-spacing:-.015em; margin-bottom:.2rem}
+
+/* ---- engagements grid ---- */
+.grid{margin-top:clamp(2.5rem,5vw,4rem); display:grid; grid-template-columns:minmax(0,1.12fr) minmax(0,1fr); gap:14px}
+.stackcol{display:grid; gap:14px}
+.cell{border:1px solid var(--line); border-radius:var(--r); padding:clamp(1.5rem,2.6vw,2.1rem); background:var(--bg-2);
+      transition:border-color .4s var(--ease), background .4s var(--ease), transform .4s var(--ease)}
+.cell:hover{border-color:var(--line-2); background:var(--bg-3); transform:translateY(-2px)}
+.cell p{margin-top:.65rem; font-size:.95rem; color:var(--fg-2)}
+.cell-media{position:relative; overflow:hidden; padding:0; display:flex; flex-direction:column; justify-content:flex-end; min-height:340px; background:var(--bg-3)}
+.cell-media img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transform:scale(1.06); transition:transform 1.4s var(--ease)}
+.cell-media:hover img{transform:scale(1.12)}
+.cell-media::after{content:""; position:absolute; inset:0; background:linear-gradient(180deg,rgba(10,11,14,.35) 8%,rgba(10,11,14,.82) 52%,rgba(10,11,14,.97) 86%)}
+.cell-media .inner{position:relative; z-index:1; padding:clamp(1.5rem,2.6vw,2.1rem)}
+.cell-accent{background:linear-gradient(150deg,var(--accent-dim),rgba(232,128,74,.03)); border-color:rgba(232,128,74,.26)}
+.cell-accent:hover{border-color:rgba(232,128,74,.45); background:linear-gradient(150deg,rgba(232,128,74,.19),rgba(232,128,74,.05))}
+.cell .tag{font-size:.78rem; font-weight:500; letter-spacing:-.005em; color:var(--accent); display:block; margin-bottom:.85rem}
+
+/* ---- closing ---- */
+.closing{position:relative; overflow:hidden; border-top:1px solid var(--line)}
+.closing img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover}
+.closing::after{content:""; position:absolute; inset:0; background:linear-gradient(180deg,rgba(10,11,14,.93),rgba(10,11,14,.88))}
+.closing .wrap{position:relative; z-index:1; padding-block:clamp(6rem,13vw,10rem); text-align:center}
+.closing .h2{margin-inline:auto}
+.closing .body{margin:1.4rem auto 2.4rem; text-align:center; max-width:52ch}
+.mailto{display:inline-block; margin-top:1.75rem; font-size:.95rem; color:var(--fg-2); transition:color .3s var(--ease)}
+.mailto:hover{color:var(--accent)}
+
+/* ---- footer ---- */
+.footer{border-top:1px solid var(--line); background:var(--bg-2)}
+.footer .wrap{padding-block:3.25rem; display:flex; justify-content:space-between; gap:2rem; flex-wrap:wrap; align-items:flex-start}
+.footer .cols{display:flex; gap:clamp(2rem,6vw,5rem); flex-wrap:wrap}
+.footer h4{font-size:.78rem; font-weight:500; color:var(--fg-3); margin:0 0 .9rem; letter-spacing:.01em}
+.footer li{margin-bottom:.15rem}
+.footer li a{display:inline-block; padding-block:.42rem}
+.footer li a{font-size:.9rem; color:var(--fg-2); transition:color .25s var(--ease)}
+.mailto{padding-block:.3rem}
+.footer li a:hover{color:var(--accent)}
+.legal{font-size:.84rem; color:var(--fg-3)}
+
+/* ============================ reveal system ============================ */
+.rise{opacity:0; transform:translateY(22px); transition:opacity .9s var(--ease), transform .9s var(--ease)}
+.rise.is-in{opacity:1; transform:none}
+.rise-d1{transition-delay:.08s}.rise-d2{transition-delay:.16s}.rise-d3{transition-delay:.24s}
+.fade{opacity:0; transition:opacity 1.1s var(--ease)}
+.fade.is-in{opacity:1}
+.pop{opacity:0; transform:translateY(16px) scale(.985); transition:opacity .75s var(--ease), transform .75s var(--ease)}
+.pop.is-in{opacity:1; transform:none}
+.stackcol .pop:nth-child(2){transition-delay:.09s}
+.stackcol .pop:nth-child(3){transition-delay:.18s}
+
+/* hero load choreography */
+.ready .w > span{transition:transform 1.05s var(--ease)}
+.ready.lit .w > span{transform:none}
+.ready .hero-lag{opacity:0; transform:translateY(18px); transition:opacity .9s var(--ease) .55s, transform .9s var(--ease) .55s}
+.ready.lit .hero-lag{opacity:1; transform:none}
+.ready .rule{transition:width 1.2s var(--ease) .45s}
+.ready.lit .rule{width:110px}
+.ready .hero-media{transition:clip-path 1.5s var(--ease) .15s}
+.ready.lit .hero-media{clip-path:inset(0 0 0 0)}
+.ready .hero-media img{transition:transform 2.2s var(--ease) .15s}
+.ready.lit .hero-media img{transform:scale(1)}
+.ready .nav{opacity:0; transition:opacity .8s var(--ease) .1s, background .45s var(--ease), border-color .45s var(--ease)}
+.ready.lit .nav{opacity:1}
+
+/* ============================ responsive ============================ */
+@media (max-width:1000px){
+  .editorial,.founder{grid-template-columns:1fr; gap:2rem}
+  .editorial .h2{position:static}
+  .row{grid-template-columns:1fr; gap:.85rem}
+  .grid{grid-template-columns:1fr}
+  .hero-media{width:56%}
+}
+@media (max-width:760px){
+  body{font-size:16px}
+  .nav{height:64px}
+  .nav .navcta{padding:.5rem .8rem; font-size:.82rem}
+  .navlinks{display:none}
+  .hero{min-height:auto; padding:112px 0 clamp(3rem,10vw,5rem); display:flex; flex-direction:column-reverse; align-items:stretch}
+  .hero-media{position:relative; width:auto; height:clamp(230px,50vw,320px); margin:2.75rem var(--gutter) 0; border-radius:var(--r); overflow:hidden; clip-path:none}
+  .hero-media img{transform:none}
+  .hero-media::after{background:linear-gradient(180deg,rgba(10,11,14,.12),rgba(10,11,14,.5))}
+  .hero h1{max-width:none}
+  .hero-actions .btn{flex:1 1 auto; justify-content:center}
+  .stack .wrap{flex-direction:column; align-items:flex-start; gap:1.75rem}
+  .logos{gap:1.75rem}
+  .cell-media{min-height:280px}
+  .footer .wrap{flex-direction:column}
+}
+
+/* ============================ reduced motion ============================ */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none !important; transition-duration:.01ms !important; transition-delay:0s !important}
+  .rise,.fade,.pop,.ready .hero-lag{opacity:1 !important; transform:none !important}
+  .w > span{transform:none !important}
+  .rule{width:110px !important}
+  .hero-media{clip-path:none !important}
+  .hero-media img,.band img,.cell-media img{transform:none !important}
+  .row::before{transform:scaleX(1) !important}
+}
+</style>
+
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a href="#top" class="mark" aria-label="Felixor, home">Felixor<i>.</i></a>
+    <nav class="navlinks" aria-label="Primary">
+      <a href="#problem">The problem</a>
+      <a href="#approach">How we work</a>
+      <a href="#about">About</a>
+      <a href="#engagements">Engagements</a>
+    </nav>
+    <a href="#contact" class="btn btn-primary navcta">Book a working session {{ARROW}}</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="hero-media">
+      <img src="{{HERO}}" alt="People working at long tables beside floor-to-ceiling windows in a large open workspace." width="1080" height="1400" fetchpriority="high">
+    </div>
+    <div class="wrap">
+      <div class="hero-copy">
+        <h1 class="display">{{HEADWORDS}}</h1>
+        <div class="rule" aria-hidden="true"></div>
+        <p class="lead hero-lag">Felixor builds the product layer around enterprise AI: the interfaces, the workflows, and the adoption that turn capability into use.</p>
+        <div class="hero-actions hero-lag" style="margin-top:2.1rem">
+          <a href="#contact" class="btn btn-primary btn-lg">Book a working session {{ARROW}}</a>
+          <a href="#approach" class="btn btn-ghost btn-lg">See how we work</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ STACK ============ -->
+  <section class="stack" aria-label="Technologies we build with">
+    <div class="wrap">
+      <p>We build inside the stack you already run.</p>
+      <div class="logos">{{LOGOS}}</div>
+    </div>
+  </section>
+
+  <!-- ============ PROBLEM ============ -->
+  <section class="section" id="problem">
+    <div class="wrap editorial">
+      <h2 class="h2 rise">Adoption is where AI programs quietly die.</h2>
+      <div>
+        <p class="body rise rise-d1">The budget gets approved. The platform team ships the endpoints. A model is standing by behind an internal gateway, and on paper the company has AI. Six months later usage sits in the single digits and nobody can say exactly what went wrong.</p>
+        <p class="body rise rise-d2">It is almost never the model. It is everything wrapped around the model: who it was built for, what it actually replaces, whether it fits the way the work already moves, and whether anyone was given a reason to open it twice.</p>
+        <p class="body rise rise-d3">That layer is a product problem. It is the part most AI programs treat as a rollout email.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ APPROACH ============ -->
+  <section class="section section-b" id="approach">
+    <div class="wrap">
+      <h2 class="h2 rise" style="max-width:18ch">How we work</h2>
+      <div class="rows">
+        <article class="row">
+          <h3 class="h3">Find the surface worth building.</h3>
+          <div>
+            <p class="body">We start where AI changes a workflow, not where it demos well. Interviews with the people doing the work, a map of where time and judgment actually go, and a shortlist of the two or three bets that survive contact with real users.</p>
+            <p class="body">You end with a ranked set of opportunities and an honest read on what each one costs to ship.</p>
+          </div>
+        </article>
+        <article class="row">
+          <h3 class="h3">Build the product, not the prototype.</h3>
+          <div>
+            <p class="body">Production interfaces, evaluation harnesses, guardrails, retrieval that holds up under real documents, and the unglamorous integration work that decides whether any of it survives a security review.</p>
+            <p class="body">Built inside your stack, in your repositories, with your engineers in the room so the knowledge stays after we leave.</p>
+          </div>
+        </article>
+        <article class="row">
+          <h3 class="h3">Earn the adoption.</h3>
+          <div>
+            <p class="body">Rollout design, enablement that respects people's time, internal champions with a real mandate, and instrumentation that shows whether the thing stuck or quietly got abandoned.</p>
+            <p class="body">Most programs stop before this step. It is the only part that compounds.</p>
+          </div>
+        </article>
+      </div>
+      <figure class="band">
+        <img src="{{BAND}}" alt="The steel lattice of a large truss bridge photographed from below against a bright sky." width="1800" height="760" loading="lazy">
+      </figure>
+    </div>
+  </section>
+
+  <!-- ============ ABOUT ============ -->
+  <section class="section section-b" id="about">
+    <div class="wrap founder">
+      <div>
+        <h2 class="h2 rise">Hyperscaler product craft, pointed at your AI program.</h2>
+        <p class="body rise rise-d1" style="margin-top:1.75rem">Felixor was founded by Curtis Lee, formerly a Microsoft executive who led product for Azure Experiences and Ecosystems: the user-facing surface of Azure and the AI initiatives built on top of it.</p>
+        <p class="body rise rise-d2">That job was this problem at a different scale. Capability was never scarce. What people chose to adopt, return to, and build their week around was. The difference between the two was almost always product work that nobody had budgeted for.</p>
+        <p class="body rise rise-d3">Felixor exists to do that work for companies that have the models and are still waiting for the results.</p>
+      </div>
+      <ul class="facts rise rise-d1">
+        <li><strong>Curtis Lee</strong>Founder</li>
+        <li><strong>Previously Microsoft</strong>Led product for Azure Experiences and Ecosystems</li>
+        <li><strong>Scope</strong>The user-facing surface of Azure, including its AI initiatives</li>
+        <li><strong>Focus now</strong>Enterprise AI that reaches production and stays in use</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ ENGAGEMENTS ============ -->
+  <section class="section section-b" id="engagements">
+    <div class="wrap">
+      <h2 class="h2 rise" style="max-width:20ch">Ways to start</h2>
+      <div class="grid">
+        <article class="cell cell-media pop">
+          <img src="{{GRID}}" alt="An aerial view of a multi-lane boulevard with traffic moving through marked lanes." width="980" height="980" loading="lazy">
+          <div class="inner">
+            <span class="tag">Start here</span>
+            <h3 class="h3">Diagnostic</h3>
+            <p>A short engagement that maps where AI can move a real workflow and what it would take to ship it. You end with a ranked shortlist, a build plan, and a clear view of what to stop doing.</p>
+          </div>
+        </article>
+        <div class="stackcol">
+          <article class="cell pop">
+            <h3 class="h3">Build sprint</h3>
+            <p>A focused push to get one surface into production with your engineers alongside us, scoped so there is something real in front of users at the end of it.</p>
+          </article>
+          <article class="cell pop">
+            <h3 class="h3">Embedded quarter</h3>
+            <p>We work as part of your team for a quarter: build, roll out, measure, and hand over. For programs that need momentum more than another assessment.</p>
+          </article>
+          <article class="cell cell-accent pop">
+            <h3 class="h3">Advisory</h3>
+            <p>Standing access for leadership on architecture, sequencing, build versus buy, and the vendor decisions that are hard to reverse later.</p>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CLOSING ============ -->
+  <section class="closing" id="contact">
+    <img src="{{CLOSE}}" alt="A city skyline at night seen across the water beneath a lit suspension bridge." width="1920" height="840" loading="lazy">
+    <div class="wrap">
+      <h2 class="h2 rise" style="max-width:20ch">Tell us what is stuck.</h2>
+      <p class="body rise rise-d1">If you have an AI program that works in a demo and stalls in the organization, that is the conversation we want to have.</p>
+      <div class="rise rise-d2">
+        <a href="mailto:hello@felixor.com?subject=Working%20session" class="btn btn-primary btn-lg">Book a working session {{ARROW}}</a>
+        <br><a href="mailto:hello@felixor.com" class="mailto">hello@felixor.com</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div>
+      <a href="#top" class="mark">Felixor<i>.</i></a>
+      <p class="legal" style="margin-top:.6rem; max-width:24ch">Enterprise AI, built to be used.</p>
+    </div>
+    <div class="cols">
+      <div>
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#approach">How we work</a></li>
+          <li><a href="#engagements">Engagements</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:hello@felixor.com">hello@felixor.com</a></li>
+          <li><a href="https://www.felixor.com">felixor.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="legal">&copy; 2026 Felixor</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var root = document.documentElement;
+  root.classList.add('ready');
+
+  // Hero choreography: the one authored moment on the page.
+  requestAnimationFrame(function(){
+    requestAnimationFrame(function(){ root.classList.add('lit'); });
+  });
+
+  if (reduce) {
+    document.querySelectorAll('.rise,.fade,.pop,.row,.band').forEach(function(el){ el.classList.add('is-in'); });
+    return;
+  }
+
+  // Scroll reveals. IntersectionObserver only: no scroll listeners anywhere on this page.
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting){ e.target.classList.add('is-in'); io.unobserve(e.target); }
+    });
+  }, { rootMargin: '0px 0px -12% 0px', threshold: 0.12 });
+  document.querySelectorAll('.rise,.fade,.pop,.row,.band').forEach(function(el){ io.observe(el); });
+
+  // Nav background state, driven by a sentinel rather than a scroll handler.
+  var nav = document.getElementById('nav');
+  var sentinel = document.createElement('div');
+  sentinel.setAttribute('aria-hidden','true');
+  sentinel.style.cssText = 'position:absolute;top:0;left:0;width:1px;height:80px;pointer-events:none';
+  document.body.prepend(sentinel);
+  new IntersectionObserver(function(entries){
+    nav.classList.toggle('stuck', !entries[0].isIntersecting);
+  }, { threshold: 0 }).observe(sentinel);
+})();
+</script>
