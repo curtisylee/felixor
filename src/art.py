@@ -1,7 +1,14 @@
+import os as _os
+_HERE = _os.path.dirname(_os.path.abspath(__file__))
+_ROOT = _os.path.dirname(_HERE)
+def _s(p): return _os.path.join(_HERE, p)
+def _r(p): return _os.path.join(_ROOT, p)
 import math, random, io, base64, json
 from PIL import Image, ImageDraw, ImageFilter, ImageChops
 W,H=1200,800
+OUT_W,OUT_H=720,480   # rendered large, downscaled: the resample denoises and compresses far better
 import sys
+import sys as _sys; _sys.path.insert(0, _HERE)
 from palettes import PALETTES, rgb
 PAL = PALETTES[sys.argv[1] if len(sys.argv)>1 else "iris"]
 BG=(10,11,14); EMBER=rgb(PAL["accent"]); RUST=rgb(PAL["deep"]); SLATE=rgb(PAL["sec"]); BONE=(226,224,220)
@@ -77,12 +84,13 @@ for k,f in MAKE.items():
     m=Image.new("L",(W,H),0); ImageDraw.Draw(m).ellipse([-W*.3,-H*.3,W*1.3,H*1.3],fill=255)
     m=m.filter(ImageFilter.GaussianBlur(190))
     im=Image.composite(im, Image.blend(im,Image.new("RGB",(W,H),BG),.72), m)
-    buf=io.BytesIO(); im.save(buf,"WEBP",quality=80,method=6)
+    im=im.resize((OUT_W,OUT_H), Image.LANCZOS)
+    buf=io.BytesIO(); im.save(buf,"WEBP",quality=46,method=6)
     out[k]="data:image/webp;base64,"+base64.b64encode(buf.getvalue()).decode()
-    im.resize((300,200)).save(f"/tmp/art_{k}.png")
+    
     print(k, len(buf.getvalue())//1024, "KB")
-json.dump(out,open("art.json","w"))
+json.dump(out,open(_s("art.json"),"w"))
 sheet=Image.new("RGB",(604,404),(16,16,18))
 for i,k in enumerate(MAKE):
-    sheet.paste(Image.open(f"/tmp/art_{k}.png"),((i%2)*302,(i//2)*202))
+    sheet.paste(Image.open(_s(f"../.art_preview_{k}.png")),((i%2)*302,(i//2)*202))
 sheet.save("/tmp/artsheet.png")

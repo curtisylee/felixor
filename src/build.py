@@ -1,4 +1,10 @@
+import os as _os
+_HERE = _os.path.dirname(_os.path.abspath(__file__))
+_ROOT = _os.path.dirname(_HERE)
+def _s(p): return _os.path.join(_HERE, p)
+def _r(p): return _os.path.join(_ROOT, p)
 import json, sys
+import sys as _sys; _sys.path.insert(0, _HERE)
 from data import PRODUCTS, STEPS, CAREER
 from palettes import PALETTES, rgb
 
@@ -25,10 +31,10 @@ def swap(t):
     for k,v in SUBS.items(): t = t.replace(k, v)
     return t
 
-fonts = json.load(open("fonts.json"))
-art   = json.load(open("art.json"))
-css   = swap(open("style.css").read())
-js    = swap(open("app.js").read())
+fonts = json.load(open(_s("fonts.json")))
+art   = json.load(open(_s("art.json")))
+css   = swap(open(_s("style.css")).read())
+js    = swap(open(_s("app.js")).read())
 
 AR  = '<svg viewBox="0 0 256 256" aria-hidden="true" focusable="false"><path d="M200,64V168a8,8,0,0,1-16,0V83.31L69.66,197.66a8,8,0,0,1-11.32-11.32L172.69,72H88a8,8,0,0,1,0-16H192A8,8,0,0,1,200,64Z"/></svg>'
 ARR = '<svg viewBox="0 0 256 256" aria-hidden="true" focusable="false"><path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/></svg>'
@@ -290,7 +296,7 @@ BODY = """<title>Felixor</title>
            artvars=ARTVARS,
            plinks="".join('<li><a href="#/product/%s">%s</a></li>' % (p["slug"], p["name"]) for p in PRODUCTS))
 
-open("artifact.html","w").write(BODY)
+open(_r("artifact.html"),"w").write(BODY)
 
 DESC = "Felixor is an AI product studio. We design, build, and ship products where the intelligence is the foundation, not a feature."
 head = """<!doctype html>
@@ -308,6 +314,6 @@ head = """<!doctype html>
 <meta property="og:url" content="https://www.felixor.com/">
 <meta name="twitter:card" content="summary_large_image">
 """ % dict(d=DESC)
-open("index.html","w").write(head + BODY.replace("<title>Felixor</title>","<title>Felixor</title>\n</head>\n<body>",1) + "\n</body>\n</html>\n")
-print(PAL_NAME, "artifact.html", round(len(open('artifact.html').read())/1024), "KB")
-print("index.html   ", round(len(open('index.html').read())/1024), "KB")
+open(_r("index.html"),"w").write(head + BODY.replace("<title>Felixor</title>","<title>Felixor</title>\n</head>\n<body>",1) + "\n</body>\n</html>\n")
+print(PAL_NAME, "artifact.html", round(len(open(_r('artifact.html')).read())/1024), "KB")
+print("index.html   ", round(len(open(_r('index.html')).read())/1024), "KB")
