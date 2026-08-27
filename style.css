@@ -1,0 +1,277 @@
+/* ============================================================
+   FELIXOR - AI Product Studio
+   Theme: single committed dark world.  Radius: one value, 8px.
+   Accent: one ember, identical in every section.
+   Easing tokens are the canonical UI curves, not hand-rolled.
+   ============================================================ */
+:root{
+  --bg:#0A0B0E; --bg-2:#101218; --bg-3:#15171E;
+  --line:rgba(255,255,255,.085); --line-2:rgba(255,255,255,.16);
+  --fg:#EDEBE7; --fg-2:#A5A8AF; --fg-3:#82868E;
+  --accent:@@ACCENT@@; --accent-2:@@A2@@; --accent-dim:@@DIM@@;
+  --accent-btn:@@BTN@@; --btn-fg:@@BTNFG@@; --slate:@@SEC@@;
+  --r:8px; --container:1280px;
+  --gutter:clamp(1.25rem,5vw,4rem);
+  --section:clamp(5.5rem,11vw,9rem);
+  --ease-out:cubic-bezier(0.23,1,0.32,1);
+  --ease-in-out:cubic-bezier(0.77,0,0.175,1);
+  --sans:"Geist","Geist Fallback",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  --ground:#0A0B0E;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%; scroll-behavior:smooth}
+body{
+  margin:0; background:var(--bg); color:var(--fg);
+  font-family:var(--sans); font-size:17px; line-height:1.65; letter-spacing:-.011em;
+  -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; overflow-x:hidden;
+}
+img,canvas{max-width:100%; display:block}
+a{color:inherit; text-decoration:none}
+h1,h2,h3,h4,p,ul,ol,figure,figcaption{margin:0}
+ul{list-style:none; padding:0}
+::selection{background:var(--accent); color:#0A0B0E}
+html{scrollbar-color:#2A2D35 var(--bg); scrollbar-width:thin}
+::-webkit-scrollbar{width:11px;height:11px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:#24272F;border:3px solid var(--bg);border-radius:99px}
+::-webkit-scrollbar-thumb:hover{background:#333741}
+:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:2px}
+.skip{position:absolute;left:-9999px;top:0;z-index:200;padding:.7rem 1rem;background:var(--accent-btn);color:var(--btn-fg);border-radius:var(--r)}
+.skip:focus{left:1rem;top:1rem}
+
+/* the ground shifts hue as sections pass, so scrolling reads as travel */
+.ground{position:fixed; inset:0; z-index:-2; background:var(--ground); transition:background 1.1s var(--ease-in-out)}
+.wrap{max-width:var(--container); margin:0 auto; padding-inline:var(--gutter)}
+
+/* ---------------- type ---------------- */
+.display{font-size:clamp(2.5rem,5.5vw,4.5rem); font-weight:500; letter-spacing:-.038em; line-height:1.0; text-wrap:balance}
+.h2{font-size:clamp(1.95rem,4vw,3.15rem); font-weight:500; letter-spacing:-.034em; line-height:1.08; text-wrap:balance}
+.h3{font-size:clamp(1.2rem,1.9vw,1.55rem); font-weight:500; letter-spacing:-.026em; line-height:1.22}
+.h4{font-size:1.0rem; font-weight:500; letter-spacing:-.018em}
+.lead{font-size:clamp(1.05rem,1.5vw,1.3rem); line-height:1.55; color:var(--fg-2); max-width:46ch}
+.body{color:var(--fg-2); max-width:68ch}
+.body + .body{margin-top:1.15em}
+.small{font-size:.9rem; color:var(--fg-3)}
+
+/* ---------------- nav ---------------- */
+.nav{position:fixed; inset:0 0 auto 0; z-index:60; height:72px; display:flex; align-items:center;
+     border-bottom:1px solid transparent;
+     transition:background .45s var(--ease-out), border-color .45s var(--ease-out), backdrop-filter .45s var(--ease-out)}
+.nav.stuck{background:rgba(10,11,14,.8); backdrop-filter:blur(16px) saturate(140%); border-bottom-color:var(--line)}
+.nav .wrap{display:flex; align-items:center; justify-content:space-between; width:100%; gap:1rem}
+.mark{font-size:1.22rem; font-weight:600; letter-spacing:-.034em; display:inline-flex; align-items:baseline}
+.mark i{color:var(--accent); font-style:normal}
+.navlinks{display:flex; align-items:center; gap:.35rem; position:relative}
+.navlinks a{font-size:.9rem; color:var(--fg-2); padding:.45rem .75rem; border-radius:var(--r); position:relative; z-index:1;
+            transition:color .2s ease}
+.navlinks a[aria-current="page"]{color:var(--fg)}
+.navlinks a:hover{color:var(--fg)}
+/* the pill slides between tabs instead of blinking to the new one */
+.navpill{position:absolute; top:0; left:0; height:100%; border-radius:var(--r); background:rgba(255,255,255,.07);
+         transition:transform .38s var(--ease-out), width .38s var(--ease-out), opacity .25s ease; opacity:0; pointer-events:none}
+.navpill.on{opacity:1}
+
+/* ---------------- buttons ---------------- */
+.btn{display:inline-flex; align-items:center; gap:.55rem; white-space:nowrap; font-size:.925rem; font-weight:500;
+     letter-spacing:-.01em; padding:.72rem 1.15rem; border-radius:var(--r); border:1px solid transparent;
+     transition:transform .16s var(--ease-out), background .22s var(--ease-out), border-color .22s var(--ease-out), color .22s var(--ease-out)}
+.btn svg{width:15px;height:15px;flex:none; transition:transform .22s var(--ease-out)}
+.btn-primary{background:var(--accent-btn); color:var(--btn-fg)}
+.btn-ghost{border-color:var(--line-2); color:var(--fg)}
+.btn-lg{padding:.92rem 1.5rem; font-size:1rem}
+.btn:active{transform:scale(.985)}
+@media (hover:hover) and (pointer:fine){
+  .btn-primary:hover{background:var(--accent); transform:translateY(-1px)}
+  .btn-ghost:hover{border-color:var(--fg-3); background:rgba(255,255,255,.05); transform:translateY(-1px)}
+  .btn:hover svg{transform:translate(2px,-2px)}
+}
+
+/* ---------------- routing ---------------- */
+.page{display:none}
+.page.active{display:block}
+.page.entering{animation:pageIn .5s var(--ease-out) both}
+.page.leaving{animation:pageOut .18s var(--ease-out) both}
+@keyframes pageIn{from{opacity:0; transform:translateY(14px)} to{opacity:1; transform:none}}
+@keyframes pageOut{from{opacity:1} to{opacity:0}}
+
+/* ---------------- hero ---------------- */
+.hero{position:relative; min-height:92dvh; display:flex; align-items:center; padding:120px 0 clamp(3rem,8vh,6rem)}
+#mesh{position:absolute; inset:0; width:100%; height:100%; z-index:-1; opacity:0; transition:opacity 1.6s var(--ease-out) .1s}
+.lit #mesh{opacity:1}
+.hero::after{content:""; position:absolute; inset:0; z-index:-1; pointer-events:none;
+  background:
+    linear-gradient(90deg, rgba(10,11,14,.80) 0%, rgba(10,11,14,.44) 42%, rgba(10,11,14,.10) 100%),
+    radial-gradient(120% 80% at 50% 60%, transparent 26%, rgba(10,11,14,.80) 100%)}
+.hero h1{max-width:17ch; margin-bottom:1.5rem}
+.rule{height:2px; background:var(--accent); width:0; margin:2rem 0; max-width:110px}
+.hero-actions{display:flex; flex-wrap:wrap; gap:.75rem; margin-top:2.1rem}
+.w{display:inline-block; overflow:hidden; padding-bottom:.14em; margin-bottom:-.14em; vertical-align:bottom}
+.w > span{display:inline-block; transform:translateY(110%)}
+
+/* ---------------- capability marquee ---------------- */
+.strip{border-block:1px solid var(--line); background:rgba(16,18,24,.72); overflow:hidden; padding-block:1.6rem;
+       -webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);
+       mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.track{display:flex; gap:3.5rem; width:max-content; animation:slide 42s linear infinite}
+.strip:hover .track{animation-play-state:paused}
+.track span{font-size:.95rem; color:var(--fg-3); white-space:nowrap; display:inline-flex; align-items:center; gap:3.5rem}
+.track span::after{content:""; width:4px; height:4px; border-radius:50%; background:var(--accent); opacity:.5}
+@keyframes slide{from{transform:translateX(0)} to{transform:translateX(-50%)}}
+
+/* ---------------- scrollytelling ---------------- */
+.story{padding-block:var(--section) 0; position:relative}
+.story-grid{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.08fr); gap:clamp(2rem,6vw,5rem); align-items:start}
+.steps{display:grid}
+.step{min-height:78vh; display:flex; flex-direction:column; justify-content:center; padding-block:2rem}
+.step-n{font-size:.8rem; font-variant-numeric:tabular-nums; letter-spacing:.06em; color:var(--accent); opacity:.45; margin-bottom:1rem;
+        transition:opacity .5s var(--ease-out)}
+.step h3{margin-bottom:1rem; color:var(--fg-3); transition:color .5s var(--ease-out)}
+.step p{color:var(--fg-3); max-width:52ch; opacity:.5; transition:opacity .5s var(--ease-out), color .5s var(--ease-out)}
+.step.on .step-n{opacity:1}
+.step.on h3{color:var(--fg)}
+.step.on p{opacity:1; color:var(--fg-2)}
+.sticky{position:sticky; top:96px; height:min(78vh,660px); display:flex; flex-direction:column}
+.vis-frame{position:relative; flex:1; border:1px solid var(--line); border-radius:var(--r); overflow:hidden; background:#08090C}
+#story-canvas{position:absolute; inset:0; width:100%; height:100%}
+.vis-label{position:absolute; left:0; right:0; bottom:0; padding:1.4rem 1.5rem; z-index:2;
+  background:linear-gradient(180deg,transparent,rgba(8,9,12,.94) 62%)}
+.vis-label .lab{display:block; height:1.5em; position:relative; overflow:hidden}
+.vis-label .lab b{position:absolute; inset:0; font-weight:500; font-size:1rem; letter-spacing:-.02em;
+  opacity:0; transform:translateY(80%); transition:opacity .45s var(--ease-out), transform .45s var(--ease-out)}
+.vis-label .lab b.on{opacity:1; transform:none}
+.bar{height:2px; background:var(--line); margin-top:1.1rem; border-radius:2px; overflow:hidden}
+.bar span{display:block; height:100%; background:var(--accent); transform-origin:left; transform:scaleX(.25);
+          transition:transform .6s var(--ease-out)}
+
+/* ---------------- product cards ---------------- */
+.cards{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; margin-top:clamp(2.5rem,5vw,4rem)}
+.card{position:relative; border:1px solid var(--line); border-radius:var(--r); overflow:hidden; background:var(--bg-2);
+      display:flex; flex-direction:column; transition:border-color .3s var(--ease-out), transform .3s var(--ease-out)}
+.card-art{position:relative; aspect-ratio:3/2; overflow:hidden; background:#08090C}
+.art{position:absolute; inset:0; background-image:var(--art); background-size:cover; background-position:center;
+      transform:scale(1.02); transition:transform .7s var(--ease-out)}
+.card-body{padding:1.4rem 1.5rem 1.6rem; display:flex; flex-direction:column; gap:.5rem; flex:1}
+.card-top{display:flex; align-items:center; justify-content:space-between; gap:1rem}
+.chip{font-size:.72rem; letter-spacing:.02em; color:var(--fg-3); border:1px solid var(--line-2); border-radius:99px; padding:.2rem .6rem; white-space:nowrap}
+.chip-dev{color:var(--accent); border-color:@@RING@@; background:var(--accent-dim)}
+.card p{font-size:.95rem; color:var(--fg-2); margin-top:.15rem}
+.card .go{margin-top:auto; padding-top:1rem; font-size:.9rem; color:var(--fg-3); display:inline-flex; align-items:center; gap:.4rem;
+          transition:color .25s var(--ease-out)}
+.card .go svg{width:14px;height:14px; transition:transform .25s var(--ease-out)}
+@media (hover:hover) and (pointer:fine){
+  .card:hover{border-color:var(--line-2); transform:translateY(-3px)}
+  .card:hover .art{transform:scale(1.09)}
+  .card:hover .go{color:var(--accent)}
+  .card:hover .go svg{transform:translate(2px,-2px)}
+}
+
+/* ---------------- product detail ---------------- */
+.phero{position:relative; padding-top:132px}
+.phero-art{position:relative; border-radius:var(--r); overflow:hidden; border:1px solid var(--line); margin-top:clamp(2rem,4vw,3rem)}
+.phero-art{height:clamp(240px,34vw,420px)}
+.phero-art .art{transform:scale(1.04)}
+.phero-art::after{content:""; position:absolute; inset:0; background:linear-gradient(180deg,transparent 40%,rgba(10,11,14,.5))}
+.back{display:inline-flex; align-items:center; gap:.45rem; font-size:.9rem; color:var(--fg-3); margin-bottom:1.6rem;
+      transition:color .25s var(--ease-out)}
+.back svg{width:15px;height:15px; transform:rotate(180deg); opacity:.85; transition:transform .25s var(--ease-out)}
+.back:hover svg{transform:rotate(180deg) translateX(2px)}
+.back:hover{color:var(--accent)}
+.pmeta{display:flex; gap:.6rem; align-items:center; margin-bottom:1.4rem; flex-wrap:wrap}
+.pgrid{display:grid; grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr); gap:clamp(2rem,6vw,5rem); align-items:start}
+.does{border-top:1px solid var(--line-2); margin-top:.4rem}
+.does li{padding-block:1.5rem; border-bottom:1px solid var(--line)}
+.does h4{margin-bottom:.4rem}
+.does p{font-size:.95rem; color:var(--fg-2); max-width:60ch}
+.cta-band{border:1px solid var(--line); border-radius:var(--r); background:linear-gradient(150deg,var(--accent-dim),@@FAINT@@);
+          padding:clamp(2rem,4vw,3rem); margin-top:clamp(3rem,6vw,4.5rem); display:flex; justify-content:space-between;
+          align-items:center; gap:2rem; flex-wrap:wrap}
+
+/* ---------------- about ---------------- */
+.about-hero{padding-top:132px}
+.timeline{margin-top:clamp(2rem,4vw,3rem); border-top:1px solid var(--line-2)}
+.timeline li{display:grid; grid-template-columns:minmax(0,.42fr) minmax(0,1fr); gap:clamp(1rem,4vw,3rem);
+             padding-block:1.5rem; border-bottom:1px solid var(--line)}
+.timeline .org{font-weight:500; letter-spacing:-.018em}
+.timeline .role{color:var(--fg-2); font-size:.98rem}
+.timeline .note{color:var(--fg-3); font-size:.92rem; margin-top:.25rem}
+
+/* ---------------- generic ---------------- */
+.section{padding-block:var(--section)}
+.section-b{border-top:1px solid var(--line)}
+.closing{text-align:center; padding-block:clamp(5rem,11vw,8rem)}
+.closing .h2{margin-inline:auto; max-width:20ch}
+.closing .body{margin:1.4rem auto 2.2rem; max-width:52ch}
+.footer{border-top:1px solid var(--line); background:rgba(16,18,24,.6)}
+.footer .wrap{padding-block:3.25rem; display:flex; justify-content:space-between; gap:2rem; flex-wrap:wrap; align-items:flex-start}
+.footer .cols{display:flex; gap:clamp(2rem,6vw,5rem); flex-wrap:wrap}
+.footer h4{font-size:.78rem; font-weight:500; color:var(--fg-3); margin:0 0 .9rem}
+.footer li{margin-bottom:.15rem}
+.footer li a{font-size:.9rem; color:var(--fg-2); display:inline-block; padding-block:.42rem; transition:color .25s var(--ease-out)}
+.footer li a:hover{color:var(--accent)}
+.legal{font-size:.84rem; color:var(--fg-3)}
+
+/* ---------------- reveals ---------------- */
+.rise{opacity:0; transform:translateY(22px); transition:opacity .8s var(--ease-out), transform .8s var(--ease-out)}
+.rise.in{opacity:1; transform:none}
+.d1{transition-delay:.06s}.d2{transition-delay:.12s}.d3{transition-delay:.18s}.d4{transition-delay:.24s}
+.pop{opacity:0; transform:translateY(16px) scale(.985); transition:opacity .65s var(--ease-out), transform .65s var(--ease-out)}
+.pop.in{opacity:1; transform:none}
+
+/* hero load choreography: the one authored moment */
+.ready .w > span{transition:transform .95s var(--ease-out)}
+.lit .w > span{transform:none}
+.ready .hero-lag{opacity:0; transform:translateY(18px); transition:opacity .8s var(--ease-out) .5s, transform .8s var(--ease-out) .5s}
+.lit .hero-lag{opacity:1; transform:none}
+.ready .rule{transition:width 1.1s var(--ease-out) .4s}
+.lit .rule{width:110px}
+.ready .nav{opacity:0; transition:opacity .7s var(--ease-out) .1s, background .45s var(--ease-out), border-color .45s var(--ease-out)}
+.lit .nav{opacity:1}
+
+/* scrubbed parallax where the browser supports a scroll timeline; decorative, so no fallback needed */
+@supports (animation-timeline: view()){
+  @media (prefers-reduced-motion: no-preference){
+    .card-art .art{animation:drift linear both; animation-timeline:view(); animation-range:entry 10% exit 90%}
+    @keyframes drift{from{transform:scale(1.12) translateY(-2.5%)} to{transform:scale(1.12) translateY(2.5%)}}
+    .phero-art .art{animation:drift2 linear both; animation-timeline:view(); animation-range:entry 0% exit 100%}
+    @keyframes drift2{from{transform:scale(1.1) translateY(-3%)} to{transform:scale(1.1) translateY(3%)}}
+  }
+}
+
+/* ---------------- responsive ---------------- */
+@media (max-width:1000px){
+  .story-grid,.pgrid{grid-template-columns:1fr; gap:2rem}
+  .sticky{position:sticky; top:80px; height:52vh; order:-1; margin-bottom:1rem}
+  .step{min-height:auto; padding-block:2.25rem}
+  .step-n,.step h3,.step p{opacity:1; color:inherit}
+  .step h3{color:var(--fg)} .step p{color:var(--fg-2)}
+  .cards{grid-template-columns:1fr}
+}
+@media (max-width:760px){
+  body{font-size:16px}
+  .nav{height:64px}
+  .navlinks{gap:0}
+  .navlinks a{padding:.4rem .5rem; font-size:.85rem}
+  .mark{font-size:1.12rem}
+  .hero{min-height:auto; padding:112px 0 clamp(3rem,10vw,5rem)}
+  .hero-actions .btn{flex:1 1 auto; justify-content:center}
+  .timeline li{grid-template-columns:1fr; gap:.3rem}
+  .footer .wrap{flex-direction:column}
+  .cta-band{flex-direction:column; align-items:flex-start}
+}
+@media (max-width:420px){ .navlinks a{padding:.4rem .38rem; font-size:.8rem} }
+/* At 360px and under the nav CTA no longer fits and gets clipped. It fits at
+   390px, so the cutoff is here, not higher. Hero and footer carry the same action. */
+@media (max-width:360px){ .nav .navcta{display:none} }
+
+/* ---------------- reduced motion ---------------- */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; transition-delay:0s !important}
+  .rise,.pop,.ready .hero-lag{opacity:1 !important; transform:none !important}
+  .w > span{transform:none !important}
+  .rule{width:110px !important}
+  #mesh{opacity:1}
+  .step-n,.step p{opacity:1 !important}
+  .step h3{color:var(--fg) !important} .step p{color:var(--fg-2) !important}
+  .track{animation:none; transform:none}
+}

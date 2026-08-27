@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="Felixor is an AI product studio. We design, build, and ship products where the intelligence is the foundation, not a feature.">
 <meta name="theme-color" content="#0A0B0E">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="canonical" href="https://www.felixor.com/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Felixor">
@@ -78,7 +81,7 @@ html{scrollbar-color:#2A2D35 var(--bg); scrollbar-width:thin}
      transition:background .45s var(--ease-out), border-color .45s var(--ease-out), backdrop-filter .45s var(--ease-out)}
 .nav.stuck{background:rgba(10,11,14,.8); backdrop-filter:blur(16px) saturate(140%); border-bottom-color:var(--line)}
 .nav .wrap{display:flex; align-items:center; justify-content:space-between; width:100%; gap:1rem}
-.mark{font-size:1.075rem; font-weight:500; letter-spacing:-.03em; display:inline-flex; align-items:baseline}
+.mark{font-size:1.22rem; font-weight:600; letter-spacing:-.034em; display:inline-flex; align-items:baseline}
 .mark i{color:var(--accent); font-style:normal}
 .navlinks{display:flex; align-items:center; gap:.35rem; position:relative}
 .navlinks a{font-size:.9rem; color:var(--fg-2); padding:.45rem .75rem; border-radius:var(--r); position:relative; z-index:1;
@@ -270,7 +273,7 @@ html{scrollbar-color:#2A2D35 var(--bg); scrollbar-width:thin}
   .nav{height:64px}
   .navlinks{gap:0}
   .navlinks a{padding:.4rem .5rem; font-size:.85rem}
-  .mark{font-size:1rem}
+  .mark{font-size:1.12rem}
   .hero{min-height:auto; padding:112px 0 clamp(3rem,10vw,5rem)}
   .hero-actions .btn{flex:1 1 auto; justify-content:center}
   .timeline li{grid-template-columns:1fr; gap:.3rem}
@@ -278,6 +281,9 @@ html{scrollbar-color:#2A2D35 var(--bg); scrollbar-width:thin}
   .cta-band{flex-direction:column; align-items:flex-start}
 }
 @media (max-width:420px){ .navlinks a{padding:.4rem .38rem; font-size:.8rem} }
+/* At 360px and under the nav CTA no longer fits and gets clipped. It fits at
+   390px, so the cutoff is here, not higher. Hero and footer carry the same action. */
+@media (max-width:360px){ .nav .navcta{display:none} }
 
 /* ---------------- reduced motion ---------------- */
 @media (prefers-reduced-motion:reduce){
