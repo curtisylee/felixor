@@ -25,7 +25,14 @@ python3 extract.py       # splits assets back out to ../assets/, subsets the fon
 ```
 
 `extract.py` exits non-zero if any asset reference fails to resolve. Trust it.
-Only rerun `art.py` if the palette changed - it is the slow step.
+Only rerun `art.py` if the palette changed - it is the slow step, and it needs
+Pillow. `art.json` is gitignored; if it is missing and the palette has not
+changed, rebuild it from the shipped images instead of rerunning `art.py`:
+each key is `data:image/webp;base64,` plus the base64 of `assets/<key>.webp`.
+
+`extract.py` subsets the font with `pyftsubset`. Without fonttools installed it
+prints a notice, ships the full font, and still exits 0 - so check that
+`assets/geist.woff2` did not grow before committing.
 
 ### Where things live
 
@@ -93,6 +100,6 @@ There is no test suite. Before pushing anything visual, serve it and look:
 python3 -m http.server 8000     # from the repo root
 ```
 
-Check at 1440, 390 and 320 px. At 320 the nav CTA is hidden on purpose - it
-clips otherwise. Confirm the scroll section on `#/` still advances 0→3 going
+Check at 1440, 390 and 360 px. At 360 and under the nav CTA is hidden on
+purpose - it clips otherwise. It fits at 390. Confirm the scroll section on `#/` still advances 0→3 going
 down and reverses 3→0 coming back up.

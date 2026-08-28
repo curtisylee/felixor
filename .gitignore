@@ -3,3 +3,5 @@ __pycache__/
 .DS_Store
 .vercel/
 node_modules/
+artifact.html
+src/art.json
