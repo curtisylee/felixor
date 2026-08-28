@@ -71,5 +71,5 @@ Pushing to `main` deploys.
 - `prefers-reduced-motion` resolves every animation to its end state.
 - The font is subsetted to Latin-1 plus smart quotes. Adding copy outside that
   range means re-subsetting in `src/extract.py`.
-- Placeholder content still in the site: `hello@felixor.com`, the four product
-  names, and the "Visit <product>" links, which point at `#` until launch.
+- Placeholder content still in the site: the four product names, and the
+  "Visit <product>" links, which point at `#` until launch.
